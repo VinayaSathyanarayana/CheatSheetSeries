@@ -1,20 +1,20 @@
 # Introduction
 
-[Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) is a type of attack that occurs when a malicious web site, email, blog, instant message, or program causes a user’s web browser to perform an unwanted action on a trusted site when the user is authenticated. A CSRF attack works because browser requests automatically include any credentials associated with the site, such as the user's session cookie, IP address, etc. Therefore, if the user is authenticated to the site, the site cannot distinguish between the forged or legitimate request sent by the victim. We would need a token/identifier that is not accessible to attacker and would not be sent along (like cookies) with forged requests that attacker initiates. For more information on CSRF, see OWASP [Cross-Site Request Forgery (CSRF) page](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)).
+[Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) is a type of attack that occurs when a malicious web site, email, blog, instant message, or program causes a user’s web browser to perform an unwanted action on a trusted site when the user is authenticated. A CSRF attack works because browser requests automatically include any credentials associated with the site, such as the user's session cookie, IP address, etc. Therefore, if the user is authenticated to the site, the site cannot distinguish between the forged or legitimate request sent by the victim. We would need a token/identifier that is not accessible to attacker and would not be sent along (like cookies) with forged requests that attacker initiates. For more information on CSRF, see OWASP [Cross-Site Request Forgery (CSRF) page](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29).
 
 The impact of a successful CSRF attack is limited to the capabilities exposed by the vulnerable application. For example, this attack could result in a transfer of funds, changing a password, or making a purchase with the user’s credentials. In effect, CSRF attacks are used by an attacker to make a target system perform a function via the target's browser, without the user’s knowledge, at least until the unauthorized transaction has been committed.
 
-Impacts of successful CSRF exploits vary greatly based on the privileges of each victim. When targeting a normal user, a successful CSRF attack can compromise end-user data and their associated functions. If the targeted end user is an administrator account, a CSRF attack can compromise the entire web application. Using social engineering, an attacker can embed malicious HTML or JavaScript code into an email or website to request a specific 'task URL'. The task then executes with or without the user's knowledge, either directly or by using a Cross-Site Scripting flaw. For example, see [Samy MySpace Worm](https://en.wikipedia.org/wiki/Samy_(computer_worm)).
+Impacts of successful CSRF exploits vary greatly based on the privileges of each victim. When targeting a normal user, a successful CSRF attack can compromise end-user data and their associated functions. If the targeted end user is an administrator account, a CSRF attack can compromise the entire web application. Using social engineering, an attacker can embed malicious HTML or JavaScript code into an email or website to request a specific 'task URL'. The task then executes with or without the user's knowledge, either directly or by using a Cross-Site Scripting flaw. For example, see [Samy MySpace Worm](https://en.wikipedia.org/wiki/Samy_%28computer_worm%29).
 
 # What's new?
 
-If you have seen OWASP [old CSRF prevention cheat sheets](https://www.owasp.org/index.php?title=Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet&action=history), you can observe that a lot has changed in this newer version. One of the major changes is that the “Verifying same origin with standard headers” CSRF defense has been moved to the Defense in Depth section, whereas token based mitigation moved to the Primary Defense section (technical reasons for this switch were added under respective sections). Multiple new sections (HMAC based token protection, auto CSRF mitigation techniques, login CSRF, not so popular CSRF mitigations and CSRF mitigation myths) were added besides adding new content, removing obsolete content to the existing sections. Security issues/caveats associated with each mitigation were also included.
+If you have seen OWASP [old CSRF prevention cheat sheets](https://www.owasp.org/index.php?title=Cross-Site_Request_Forgery_%28CSRF%29_Prevention_Cheat_Sheet&action=history), you can observe that a lot has changed in this newer version. One of the major changes is that the “Verifying same origin with standard headers” CSRF defense has been moved to the Defense in Depth section, whereas token based mitigation moved to the Primary Defense section (technical reasons for this switch were added under respective sections). Multiple new sections (HMAC based token protection, auto CSRF mitigation techniques, login CSRF, not so popular CSRF mitigations and CSRF mitigation myths) were added besides adding new content, removing obsolete content to the existing sections. Security issues/caveats associated with each mitigation were also included.
 
 # Warning: No Cross-Site Scripting (XSS) Vulnerabilities
 
-[Cross-Site Scripting](https://www.owasp.org/index.php/Cross-Site_Scripting) is not necessary for CSRF to work. However, any cross-site scripting vulnerability can be used to defeat all CSRF mitigation techniques available in the market today (except mitigation techniques that involve user interaction and described later in this cheatsheet). This is because an XSS payload can simply read any page on the site using an XMLHttpRequest (direct DOM access can be done, if on same page) and obtain the generated token from the response, and include that token with a forged request.  This technique is exactly how the [MySpace (Samy) worm](https://en.wikipedia.org/wiki/Samy_(computer_worm)) defeated MySpace's anti-CSRF defenses in 2005, which enabled the worm to propagate.
+[Cross-Site Scripting](https://www.owasp.org/index.php/Cross-Site_Scripting) is not necessary for CSRF to work. However, any cross-site scripting vulnerability can be used to defeat all CSRF mitigation techniques available in the market today (except mitigation techniques that involve user interaction and described later in this cheatsheet). This is because an XSS payload can simply read any page on the site using an XMLHttpRequest (direct DOM access can be done, if on same page) and obtain the generated token from the response, and include that token with a forged request.  This technique is exactly how the [MySpace (Samy) worm](https://en.wikipedia.org/wiki/Samy_%28computer_worm%29) defeated MySpace's anti-CSRF defenses in 2005, which enabled the worm to propagate.
 
-It is imperative that no XSS vulnerabilities are present to ensure that CSRF defenses can't be circumvented. Please see the OWASP [XSS Prevention Cheat Sheet](XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet.md) for detailed guidance on how to prevent XSS flaws.
+It is imperative that no XSS vulnerabilities are present to ensure that CSRF defenses can't be circumvented. Please see the OWASP [XSS Prevention Cheat Sheet](Cross_Site_Scripting_Prevention_Cheat_Sheet.md) for detailed guidance on how to prevent XSS flaws.
 
 # Resources that need to be protected from CSRF vulnerability
 
@@ -35,7 +35,7 @@ As a defense-in-depth measure, consider implementing one mitigation from Defense
 
 ## Token Based Mitigation
 
-This defense is one the most popular and recommended methods to mitigate CSRF. It can be achieved either with state (synchronizer token pattern) or stateless (encrypted/hash based token pattern). See section 4.3 on how to mitigate login CSRF in your applications. For all the mitigation's, it is implicit that general security principles should be adhered
+This defense is one of the most popular and recommended methods to mitigate CSRF. It can be achieved either with state (synchronizer token pattern) or stateless (encrypted/hash based token pattern). See section 4.3 on how to mitigate login CSRF in your applications. For all the mitigation's, it is implicit that general security principles should be adhered
 
 - Strong encryption/HMAC functions should be adhered to.
 
@@ -45,7 +45,9 @@ This defense is one the most popular and recommended methods to mitigate CSRF. I
 
 ### Synchronizer Token Pattern
 
-Any state changing operation requires a secure random token (e.g., CSRF token) to prevent CSRF attacks. A CSRF token should be unique per user session, large random value, and also generated by a cryptographically secure random number generator. The CSRF token is added as a hidden field for forms headers/parameters for AJAX calls, and within the URL if the state changing operation occurs via a GET. See "Disclosure of Token in URL" section below. The server rejects the requested action if the CSRF token fails validation.
+Any state changing operation requires a secure random token (e.g., CSRF token) to prevent CSRF attacks. A CSRF token should be unique per user session, large random value, and also generated by a cryptographically secure random number generator. The CSRF token is added as a hidden field for forms, headers/parameters for AJAX calls (It is recommended to add in parameter than in header. If you need to add it to header, it is better to make sure that the token header is not being logged at your server) and within the URL if the state changing operation occurs via a GET. See "Disclosure of Token in URL" section below. The server rejects the requested action if the CSRF token fails validation.
+
+Inserting the CSRF token in the HTTP request header via JavaScript is considered more secure than adding the token in the hidden field form parameter. In this situation, even if the CSRF token is weak, predictable or leaked but still an attacker cannot forge the POST request directly by setting the custom request header through XMLHttpRequest. As per the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Preflighted_requests) when the attacker tries to set any custom header through any XMLHttpRequest, the browser sends the OPTIONS (pre-flight) request. Moreover, when the attacker tries to spoof the header through flash, the browser initiates the GET request for crossdomain.xml. In both cases, the browser prevents the forged request to be sent.
 
 In order to facilitate a "transparent but visible" CSRF solution, developers are encouraged to adopt a pattern similar to [Synchronizer Token Pattern](http://www.corej2eepatterns.com/Design/PresoDesign.htm) (The original intention of this synchronizer token pattern was to detect duplicate submissions in forms). The synchronizer token pattern requires the generation of random "challenge" tokens that are associated with the user's current session. These challenge tokens are then inserted within the HTML forms and calls associated with sensitive server-side operations. It is the responsibility of the server application to verify the existence and correctness of this token. By including a challenge token with each request, the developer has a strong control to verify that the user actually intended to submit the desired requests. Inclusion of a required security token in HTTP requests associated with sensitive business functions helps mitigate CSRF attacks as successful exploitation assumes the attacker knows the randomly generated token for the target victim's session.
 
@@ -89,33 +91,28 @@ For these cases, attempting to retrofit this pattern in existing applications re
 
 ### Encryption based Token Pattern
 
-The Encrypted Token Pattern leverages an encryption, rather than comparison method of Token-validation. It is most suitable for applications that do not want to maintain any state at server side.
+The Encrypted Token Pattern leverages an encryption, rather than comparison method of Token-validation. It is most suitable for applications that do not want to maintain any state at server side. 
 
-After successful authentication, the server generates a unique token comprised of the user's ID, a timestamp value and a [nonce](http://en.wikipedia.org/wiki/Cryptographic_nonce), using a unique key available only on the server. This token is returned to the client and embedded in a hidden field for forms, in the request-header/parameter for AJAX requests. On receipt of this request, the server reads and decrypts the token value with the same key used to create the token. Inability to correctly decrypt suggest an intrusion attempt. Once decrypted, the UserId and timestamp contained within the token are validated; the UserId is compared against the currently logged in user, and the timestamp is compared against the current time.
+Server generates a token comprised of the user's session ID and a timestamp (to prevent replay attacks) using a unique key available only on the server (AES256-with GCM mode/GCM-SIV is recommended. Usage of ECB mode is strictly not recommended. If you would like to use any other block cipher mode of operation, refer [here](Cryptographic_Storage_Cheat_Sheet.md) and [here](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) for more information). This token is returned to the client and embedded in a hidden field for forms, in the request-header/parameter for AJAX requests. On receipt of this request, the server reads and decrypts the token value with the same key used to create the token. Inability to correctly decrypt suggest an intrusion attempt (recommend to block and log the attack for incident response purposes). Once decrypted, the users sessionId and timestamp contained within the token are validated; session-id is compared against the currently logged in user, and the timestamp is compared against the current time to verify that its not beyond the defined token expiry time. If session-id matches and the timestamp is under the defined token expiry time, request can be allowed.
 
-On successful token-decryption, the server has access to parsed values, ideally in the form of [claims](http://en.wikipedia.org/wiki/Claims-based_identity). These claims are processed by comparing the UserId claim to any potentially stored UserId (in a Cookie or Session variable, if the site already contains a means of authentication). The Timestamp is validated against the current time, preventing replay attacks. Alternatively, in the case of a CSRF attack, the server will be unable to decrypt the poisoned token, and can block and log the attack.
-
-This technique addresses some of the shortfalls in other stateless approaches, such as the need to store data in a Cookie, circumnavigating the Cookie-subdomain and HTTPONLY issues.
+Refer [here](Key_Management_Cheat_Sheet.md#key-management-lifecycle-best-practices) to learn best practices about managing your encryption key.
 
 ### HMAC Based Token Pattern
 
-[HMAC (hash-based message authentication code)](https://en.wikipedia.org/wiki/HMAC) is a cryptographic function that helps to guarantee integrity and authentication of a message. It is another way that CSRF mitigation can be achieved without maintaining any state at the server and is similar to an encryption token-based pattern with two main differences:
+HMAC Based Token Pattern mitigation is also achieved without maintaining any state at the server. [HMAC](https://en.wikipedia.org/wiki/HMAC) based CSRF protection works similar to encryption based CSRF protection with a couple of minor differences
+1. Use strong HMAC function (SHA256 or stronger algorithms are recommended) instead of an encryption function to generate the token
+2. Token is HMAC+timestamp
 
-- Uses a strong HMAC function instead of an encryption function to generate the token
-- Includes an additional field called ‘operation’ that would indicate the purpose of the operation for which you are including the CSRF token (may it be form tag/ajax call)
-
-Example:
-
-```text
-oneclickpurchase (or) buy/asin=SDFH&category=2&quantity=3)
-```
-
-**Note:** Fields mentioned in encryption token pattern (user's ID, a timestamp value and a nonce) are included.
-
-The operation field helps in mitigating the fact that the hash function generates the same value irrespective of multiple iterations (unlike strong encryption functions that generate different values when they are encrypted each time). So, it would help in avoiding having repeated token values across your application. Nonce field serves the same purpose as in encrypted token pattern (i.e., to avoid rare collisions due to weak cryptographic functions and acts as a defense-in-depth measure).
-
-Generate the token using HMAC including all four fields mentioned previously (user's ID, a timestamp value, nonce, and operation) and then include it in hidden fields for form tags, headers/parameters for ajax calls. Once you receive the HMAC from the client in the requests, re-generate HMAC with the same fields that you used to generate it, and then verify that the HMAC you re-generated matches the HMAC received from the client. If it does, it is a legitimate user request and if it does not, flag it as a CSRF intrusion and alert your incident response teams. Because an attacker has no visibility into the key used for generating the hash fields used in generating it, there is no way for them to re-generate it to use in forged request.
-
+Below are the steps for the proper implementation of the HMAC based CSRF protection:
+1. Generate the token\
+Using key K, generate HMAC(usersessionID+timestamp) and append the same timestamp value to it which results in your CSRF token.
+2. Include the token (*i.e.* HMAC+timestamp)\
+Include token in a hidden field for forms and in the request-header field/request body parameter for AJAX requests. 
+3. Validating the token\
+When the request is received at the server, re-generate the token with same key K (parameters are sessionID from the request and timestamp in the received token). If the HMAC in the received token and the one generated in this step match, verify if timestamp received is less than defined token expiry time. If both of them are success, then request is treated as legitimate and can be allowed. If not, block the request and log the attack for incident response purposes.
+   
+Refer [here](Key_Management_Cheat_Sheet.md#key-management-lifecycle-best-practices) to learn best practices about managing your HMAC key.
+     
 ## Auto CSRF Mitigation Techniques
 
 Though the technique of mitigating tokens is widely used (stateful with synchronizer token and stateless with encrypted/HMAC token), the major problem associated with these techniques is the human tendency to forget things at times. If a developer forgets to add the token to any state changing operation, they are making the application vulnerable to CSRF. To avoid this, you can try to automate the process of adding tokens to CSRF vulnerable resources (mentioned earlier in this document). You can achieve this by doing the following:
@@ -160,7 +157,7 @@ If the Origin header is present, verify that its value matches the target origin
 
 If the Origin header is not present, verify the hostname in the Referer header matches the target origin. This method of CSRF mitigation is also commonly used with unauthenticated requests, such as requests made prior to establishing a session state, which is required to keep track of a synchronization token.
 
-In both cases, make sure the target origin check is strong. For example, if your site is `site.com` make sure `site.com.attacker.com` does not pass your origin check (i.e., match through the trailing/after the origin to make sure you are matching against the entire origin).
+In both cases, make sure the target origin check is strong. For example, if your site is `site.com` make sure `site.com.attacker.com` does not pass your origin check (i.e., match through the trailing / after the origin to make sure you are matching against the entire origin).
 
 If neither of these headers are present, you can either accept or block the request. We recommend **blocking**. Alternatively, you might want to log all such instances, monitor their use cases/behavior, and then start blocking requests only after you get enough confidence.
 
@@ -186,9 +183,9 @@ As it’s implicit, this mitigation would work properly when origin or referrer 
 - Origin header is included for all cross origin requests but for same origin requests, in most browsers it is only included in POST/DELETE/PUT **Note:** Although it is not ideal, many developers use GET requests to do state changing operations.
 - Referer header is no exception. There are multiple use cases where referrer header is omitted as well ([1](https://stackoverflow.com/questions/6880659/in-what-cases-will-http-referer-be-empty), [2](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer), [3](https://en.wikipedia.org/wiki/HTTP_referer#Referer_hiding), [4](https://seclab.stanford.edu/websec/csrf/csrf.pdf) and [5](https://www.google.com/search?q=referrer+header+sent+null+value+site:stackoverflow.com)). Load balancers, proxies and embedded network devices are also well known to strip the referrer header due to privacy reasons in logging them.
 
-Though exceptions can be written for above cases in your source and target origin check logic, there is currently no central repository (even there is one, keeping it up-to-date is a problem) that references all such use cases. Each browser might also handle these use cases differently (browsers are known to handle things differently considering their ecosystem. IE example of not sending origin header within trusted zone is such example). Rejecting requests that do not contain origin and/or referrer headers might sound like a good idea but it can impact legitimate users. Keeping this system in monitoring mode and trying to investigate use cases such as stated above, then adding them into exception logic is a process that you may consider to make this defense more stable in your environment.
+Usually, a minor percentage of traffic does fall under above categories ([1-2%](http://homakov.blogspot.com/2012/04/playing-with-referer-origin-disquscom.html)) and no enterprise would want to lose even this minor % of traffic. One of the popular technique used across Internet to make this technique more usable is to accept the request if the Origin/referrer matches your configured list of domains "OR" a null value (Examples [here](http://homakov.blogspot.com/2012/04/playing-with-referer-origin-disquscom.html). null value is to cover the edge cases mentioned above where these headers are not sent). Please note that, attackers can use it to exploit CSRF using the edge cases but many prefer to deploy this technique it as a defense in depth measure because of minor effort involved in creating it.
 
-This CSRF defense relies on browser behavior that can change at times. For example, when new privacy contexts are discovered, under which situations you have to keep your validation logic updated, where as in token based mitigation, you have full control on the CSRF mitigation. If browsers alter CSRF tokens, they are literally changing the HTML content on rendering pages (which no browser would ever want to do!).
+As an alternative, you can write exceptions for each of the edge cases observed in your environment but that requires significant effort and is a long term on-going commitment with minimal 100% success guarantee. This CSRF defense relies on browser behavior that can change at times. For example, when new privacy contexts are discovered, under which situations you have to keep your validation logic updated, where as in token based mitigation, you have full control on the CSRF mitigation. If browsers alter CSRF tokens, they are literally changing the HTML content on rendering pages (which no browser would ever want to do!).
 
 When there is an XSS vulnerability on a page of an application protected with Origin and/or Referrer header, the level of effort required to exploit state changing operations (that are typically vulnerable to CSRF) on other pages is very easy (grab the parameters and forge a request, as Origin and Referrer header is included by default by browsers) than compared to token based mitigation (where attacker needs to download the target page, parse the DOM for the token, construct a forge request, and send it to server).
 
@@ -210,28 +207,30 @@ There are a couple of drawbacks associated with the assumptions made here. The p
 
 So, unless you are sure that your subdomains are fully secured and only accept HTTPS connections (we believe it’s difficult to guarantee at large enterprises), you should not rely on the Double Submit Cookie technique as a primary mitigation for CSRF.
 
-A variant of double submit cookie that can mitigate both the risks mentioned above is including the token in an encrypted cookie - often within the authentication cookie - and then at the server side matching it (after decrypting authentication cookie) with the token in hidden form field or parameter/header for ajax calls. This works because a sub domain has no way to over-write an properly crafted encrypted cookie without the necessary information such as encryption key.
+Scenarios a and b mentioned above are possible only if the CSRF token is not derived/tied to the session in which case an attacker can overwrite the token in the parent domain cookie with XSS in child domain. A variant of how this can be mitigated by linking token and session/auth cookie is explained below.
+
+Including the token in an encrypted cookie - often within the authentication cookie - and then at the server side matching it (after decrypting authentication cookie) with the token in hidden form field or parameter/header for ajax calls mitigates both the issues mentioned above. This works because a sub domain has no way to over-write an properly crafted encrypted cookie without the necessary information such as encryption key.
 
 ## Samesite Cookie Attribute
 
-SameSite is a cookie attribute (similar to HTTPOnly, Secure etc.) introduced by Google to mitigate CSRF attacks. It is defined in [this](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7) Internet Draft. This attribute helps in preventing the browser from sending cookies along with cross-site requests. Possible values for this attribute are lax or strict.
+SameSite is a cookie attribute (similar to HTTPOnly, Secure etc.) which aims to mitigate CSRF attacks. It is defined in [RFC6265bis](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7). This attribute helps the browser decide whether to send cookies along with cross-site requests. Possible values for this attribute are `Lax`, `Strict`, or `None`.
 
-The strict value will prevent the cookie from being sent by the browser to the target site in all cross-site browsing context, even when following a regular link. For example, for a GitHub-like website this would mean that if a logged-in user follows a link to a private GitHub project posted on a corporate discussion forum or email, GitHub will not receive the session cookie and the user will not be able to access the project. A bank website however most likely doesn't want to allow any transactional pages to be linked from external sites, so the strict flag would be most appropriate.
+The Strict value will prevent the cookie from being sent by the browser to the target site in all cross-site browsing context, even when following a regular link. For example, for a GitHub-like website this would mean that if a logged-in user follows a link to a private GitHub project posted on a corporate discussion forum or email, GitHub will not receive the session cookie and the user will not be able to access the project. A bank website however doesn't want to allow any transactional pages to be linked from external sites, so the Strict flag would be most appropriate.
 
-The default lax value provides a reasonable balance between security and usability for websites that want to maintain user's logged-in session after the user arrives from an external link. In the above GitHub scenario, the session cookie would be allowed when following a regular link from an external website while blocking it in CSRF-prone request methods such as POST. Only cross-site-requests that are allowed in lax mode are the ones that have top-level navigations and are also “safe” HTTP methods (more details [here](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7.1)).
+The default Lax value provides a reasonable balance between security and usability for websites that want to maintain user's logged-in session after the user arrives from an external link. In the above GitHub scenario, the session cookie would be allowed when following a regular link from an external website while blocking it in CSRF-prone request methods such as POST. Only cross-site-requests that are allowed in Lax mode are the ones that have top-level navigations and are also [safe](https://tools.ietf.org/html/rfc7231#section-4.2.1) HTTP methods.
+
+For more details on the `SameSite` values, check the following [section](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7.1) from the [rfc](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02).
 
 Example of cookies using this attribute:
 
-```text
+```
 Set-Cookie: JSESSIONID=xxxxx; SameSite=Strict
 Set-Cookie: JSESSIONID=xxxxx; SameSite=Lax
-```    
+```
 
-Support for this attribute in different browsers is increasing but there are still browsers that need to adopt this. As of August 2018, SameSite attribute is on browsers used by 68.92% of Internet users (detailed statistics are [here](https://caniuse.com/#feat=same-site-cookie-attribute)).
+All desktop browsers and almost all mobile browsers now support the `SameSite` attribute. To keep track of the browsers implementing it and the usage of the attribute, refer to the following [service](https://caniuse.com/#feat=same-site-cookie-attribute).
 
-Though this technique seems to be efficient in mitigating CSRF attacks, it is still in early stages (in [draft](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7)) and does not have full browser support as mentioned above. Google’s [draft](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7) also mentions a couple cases where forged requests can be simulated by attackers as same-site requests (and thus allowing to send SameSite cookies).
-
-Considering the factors above, it is not recommended to be used as a primary defense. Google agrees with this stance and strongly encourages developers to deploy server-side defenses such as tokens to mitigate CSRF more fully.
+It is important to note that this attribute should be implemented as an additional layer *defense in depth* concept. This attribute protects the user through the browsers supporting it, and it contains as well 2 ways to bypass it as mentioned in the following [section](https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7.1). This attribute should not replace having a CSRF Token. Instead, it should co-exist with that token in order to protect the user in a more robust way.
 
 ## Use of Custom Request Headers
 
@@ -241,7 +240,7 @@ A particularly attractive custom header and value to use is “X-Requested-With:
 
 If this is the case for your system, you can simply verify the presence of this header and value on all your server side AJAX endpoints in order to protect against CSRF attacks. This approach has the double advantage of usually requiring no UI changes and not introducing any server side state, which is particularly attractive to REST services. You can always add your own custom header and value if that is preferred.
 
-This defense technique is specifically discussed in section 4.3 of [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf). However, bypasses of this defense using Flash were documented as early as 2008 and again as recently as 2015 by Mathias Karlsson to [exploit a CSRF flaw in Vimeo](https://hackerone.com/reports/44146). Flash attack can't spoof the Origin or Referer headers, so by checking both of them we believe this combination of checks should prevent Flash bypass CSRF attacks (if any comes up in future).
+This defense technique is specifically discussed in section 4.3 of [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf). However, bypasses of this defense using Flash were documented as early as 2008 and again as recently as 2015 by Mathias Karlsson to [exploit a CSRF flaw in Vimeo](https://hackerone.com/reports/44146). Riyaz Walikar from [Appsecco Labs](https://appsecco.com/) was able to exploit this even in early 2019 [using older versions of Firefox](https://blog.appsecco.com/exploiting-csrf-on-json-endpoints-with-flash-and-redirects-681d4ad6b31b) and also in some recent versions of Chrome (with a bit of [user involvement](https://github.com/sp1d3r/swf_json_csrf/blob/master/read.html)). Since we cannot the control the versions of browser end user uses nor depend on it for their security, this technique is not recommended as a primary defense in measure.
 
 Besides any possible future bypasses such as Flash, using a static header will make it easy to exploit other state changing operations in the application (similar to the previous explanation on why ease of exploitation is easier in origin/referrer header check than token based mitigation). Including a random token instead of static header value is more or less equal to the token based approach described in the primary defense section. Developers also need to consider that if you are using this approach in an application with both Ajax calls and form tags, this technique would only help Ajax calls in protecting from CSRF and you would still need protect `<form>` tags with approaches described in this document such as tokens. Setting custom headers on form tags is not possible directly. Also, CORS configuration should also be robust to make this solution work effectively (as custom headers for requests coming from other domains trigger a pre-flight CORS check).
 
@@ -275,16 +274,17 @@ The following shows techniques presumed to be CSRF mitigations but none of them 
 
 - **CORS**: CORS is a header designed to relax Same-Origin-Policy when cross-origin communication between sites is required. It is not designed, nor prevents CSRF attacks.
 - **Using HTTPS**: Using HTTPS has nothing to do with the protection from CSRF attacks. Resources that are under HTTPS are still vulnerable to CSRF if proper CSRF mitigations described above are not included.
-- More myths can be found [here](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)).
+- More myths can be found [here](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29).
 
 # Personal Safety CSRF Tips for Users
 
 Since CSRF vulnerabilities are reportedly widespread, we recommend using the following best practices to mitigate risk.
 
-1. Logoff immediately after using a Web application.
-2. Do not allow your browser to save username/passwords, and do not allow sites to “remember” your login.
-3. Do not use the same browser to access sensitive applications and to surf the Internet freely (tabbed browsing).
-4. The use of plugins such as No-Script makes POST based CSRF vulnerabilities difficult to exploit. This is because JavaScript is used to automatically submit the form when the exploit is loaded. Without JavaScript, the attacker would have to trick the user into submitting the form manually.
+1. Logoff immediately after using a Web application.
+2. Do not allow your browser to save username/passwords, and do not allow sites to “remember” your login.
+3. Do not use the same browser to access sensitive applications and to surf the Internet freely (tabbed browsing).
+4. The use of plugins such as No-Script makes POST based CSRF vulnerabilities difficult to exploit. This is because JavaScript is used to automatically submit the form when the exploit is loaded. Without JavaScript, the attacker would have to trick the user into submitting the form manually.
+
 Integrated HTML-enabled mail/browser and newsreader/browser environments pose additional risks since simply viewing a mail message or a news message might lead to the execution of an attack. 
 
 # Implementation reference example
@@ -540,14 +540,126 @@ public class CSRFValidationFilter implements Filter {
 }
 ```
 
-# Authors and Primary Editors
+# JavaScript Guidance for Auto-inclusion of CSRF tokens as an AJAX Request header
 
-[Manideep Konakandla (Amazon Application Security Team)](http://www.manideepk.com)
+The following guidance considers **GET**, **HEAD** and **OPTIONS** methods are safe operations. Therefore **GET**, **HEAD**, and **OPTIONS** method AJAX calls need not be appended with a CSRF token header. However, if the verbs are used to perform state changing operations, they will also require a CSRF token header.
 
-Dave Wichers - dave.wichers@owasp.org
+**POST**, **PUT**, **PATCH**, **DELETE** and **TRACE** verbs, being state changing verbs, should have a CSRF token attached to the request. The following guidance will demonstrate how to create overrides in JavaScript libraries to have CSRF tokens included automatically with every AJAX request for the state changing methods mentioned above.
 
-Paul Petefish
+## Storing the CSRF Token Value in the DOM
 
-Eric Sheridan - eric.sheridan@owasp.org
+A CSRF token can be included in the ```<meta>``` tag as shown below. All subsequent calls in the page can extract the CSRF token from this ```<meta>``` tag. It can also be stored in a JS variable / anywhere on the DOM. However, it is not recommended to store it in cookies or browser local storage.
 
-Dominique Righetto - dominique.righetto@owasp.org
+The following code snippet can be used to include a CSRF token as a ```<meta>``` tag:
+
+```html
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
+
+The exact syntax of populating the content attribute would depend on your web application's backend programming language.
+
+## Overriding Defaults to Set Custom Header
+
+Several JavaScript libraries allow for overriding default settings to have a header added automatically to all AJAX requests.
+
+### XMLHttpRequest (Native JavaScript)
+
+XMLHttpRequest's open() method can be overridden to set the ```anti-csrf-token``` header whenever the ```open()``` method is invoked next. The function ```csrfSafeMethod()``` defined below will filter out the safe HTTP methods and only add the header to unsafe HTTP methods.
+
+This can be done as demonstrated in the following code snippet:
+
+```html
+<script type="text/javascript">
+    var csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS)$/.test(method));
+    }
+    var o = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function(){
+        var res = o.apply(this, arguments);
+        var err = new Error();
+        if (!csrfSafeMethod(arguments[0])) {
+            this.setRequestHeader('anti-csrf-token', csrf_token);
+        }
+        return res;
+    };
+ </script>
+ ```
+
+### AngularJS
+
+AngularJS allows for setting default headers for HTTP operations. Further documentation can be found at AngularJS's documentation for [$httpProvider](https://docs.angularjs.org/api/ng/provider/$httpProvider#defaults).
+
+```html
+<script>
+    var csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+    var app = angular.module("app", []);
+
+    app.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.defaults.headers.post["anti-csrf-token"] = csrf_token;
+        $httpProvider.defaults.headers.put["anti-csrf-token"] = csrf_token;
+        $httpProvider.defaults.headers.patch["anti-csrf-token"] = csrf_token;
+        // AngularJS does not create an object for DELETE and TRACE methods by default, and has to be manually created.
+        $httpProvider.defaults.headers.delete = {
+            "Content-Type" : "application/json;charset=utf-8",
+            "anti-csrf-token" : csrf_token
+        };
+        $httpProvider.defaults.headers.trace = {
+            "Content-Type" : "application/json;charset=utf-8",
+            "anti-csrf-token" : csrf_token
+        };
+      }]);
+ </script>
+```
+
+This code snippet has been tested with AngularJS version 1.7.7.
+
+### Axios
+
+[Axios](https://github.com/axios/axios) allows us to set default headers for the POST, PUT, DELETE and PATCH actions.
+
+```html
+<script type="text/javascript">
+    var csrf_token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+    axios.defaults.headers.post['anti-csrf-token'] = csrf_token;
+    axios.defaults.headers.put['anti-csrf-token'] = csrf_token;
+    axios.defaults.headers.delete['anti-csrf-token'] = csrf_token;
+    axios.defaults.headers.patch['anti-csrf-token'] = csrf_token;
+
+    // Axios does not create an object for TRACE method by default, and has to be created manually.
+    axios.defaults.headers.trace = {}
+    axios.defaults.headers.trace['anti-csrf-token'] = csrf_token
+</script>
+```
+
+This code snippet has been tested with Axios version 0.18.0.
+
+### JQuery
+
+JQuery exposes an API called $.ajaxSetup() which can be used to add the ```anti-csrf-token``` header to the AJAX request. API documentation for ```$.ajaxSetup()``` can be found here. The function ```csrfSafeMethod()``` defined below will filter out the safe HTTP methods and only add the header to unsafe HTTP methods.
+
+You can configure JQuery to automatically add the token to all request headers by adopting the following code snippet. This provides a simple and convenient CSRF protection for your AJAX based applications:
+
+```html
+<script type="text/javascript">
+    var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("anti-csrf-token", csrf_token);
+            }
+        }
+    });
+</script>
+```
+
+This code snippet has been tested with jQuery version 3.3.1.

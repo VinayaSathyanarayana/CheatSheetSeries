@@ -62,7 +62,7 @@ When building LDAP queries in application code, you MUST escape any untrusted da
 
 ### Safe Java Escaping Example
 
-- [Prevent LDAP injection](https://wiki.sei.cmu.edu/confluence/display/java/IDS54-J.+Prevent+LDAP+injection).
+- [Prevent LDAP injection](https://wiki.sei.cmu.edu/confluence/spaces/flyingpdf/pdfpageexport.action?pageId=88487534).
 - [Legacy OWASP ESAPI for Java DefaultEncoder which includes encodeForLDAP(String) and encodeForDN(String)](https://github.com/ESAPI/esapi-java-legacy/blob/develop/src/main/java/org/owasp/esapi/reference/DefaultEncoder.java).
 
 ### Safe C Sharp .NET TBA Example
@@ -100,10 +100,4 @@ Input validation can be used to detect unauthorized input before it is passed to
 
 - OWASP article on [LDAP Injection](https://www.owasp.org/index.php/LDAP_injection) Vulnerabilities.
 - OWASP article on [Preventing LDAP Injection in Java](https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java).
-- [OWASP Testing Guide](https://www.owasp.org/index.php/OWASP_Testing_Project) article on how to [Test for LDAP Injection](https://www.owasp.org/index.php/Testing_for_LDAP_Injection_(OTG-INPVAL-006)) Vulnerabilities.
-
-# Authors and Primary Editors
-
-Ben Weintraub - Ben@bluetalon.com
-
-Jim Manico - jim@owasp.org
+- [OWASP Testing Guide](https://www.owasp.org/index.php/OWASP_Testing_Project) article on how to [Test for LDAP Injection](https://www.owasp.org/index.php/Testing_for_LDAP_Injection_%28OTG-INPVAL-006%29) Vulnerabilities.

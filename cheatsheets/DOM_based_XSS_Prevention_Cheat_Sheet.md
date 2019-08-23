@@ -1,10 +1,10 @@
 # Introduction
 
-When looking at XSS (Cross-Site Scripting), there are three generally recognized forms of [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)):
-* [Reflected or Stored](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)#Stored_and_Reflected_XSS_Attacks)
+When looking at XSS (Cross-Site Scripting), there are three generally recognized forms of [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29):
+* [Reflected or Stored](https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29#Stored_and_Reflected_XSS_Attacks)
 * [DOM Based XSS](https://www.owasp.org/index.php/DOM_Based_XSS). 
 
-The [XSS Prevention Cheatsheet](XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet.md) does an excellent job of addressing Reflected and Stored XSS. This cheatsheet addresses DOM (Document Object Model) based XSS and is an extension (and assumes comprehension of) the [XSS Prevention Cheatsheet](XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet.md).
+The [XSS Prevention Cheatsheet](Cross_Site_Scripting_Prevention_Cheat_Sheet.md) does an excellent job of addressing Reflected and Stored XSS. This cheatsheet addresses DOM (Document Object Model) based XSS and is an extension (and assumes comprehension of) the [XSS Prevention Cheatsheet](Cross_Site_Scripting_Prevention_Cheat_Sheet.md).
 
 In order to understand DOM based XSS, one needs to see the fundamental difference between Reflected and Stored XSS when compared to DOM based XSS. The primary difference is where the attack is injected into the application. 
 
@@ -543,7 +543,7 @@ Finally there is the problem that certain methods in JavaScript which are usuall
 
 One example of an attribute which is thought to be safe is `innerText`. 
 
-Some papers or guides advocate its use as an alternative to `innerHTML` to mitigate against XSS in `innerHTML`. However, depending on the tag which `innerText` is applied, code can be executed. Also note, `innerText` is non standard and is not supported in FireFox
+Some papers or guides advocate its use as an alternative to `innerHTML` to mitigate against XSS in `innerHTML`. However, depending on the tag which `innerText` is applied, code can be executed.  
 
 ```html
 <script>
@@ -552,34 +552,4 @@ Some papers or guides advocate its use as an alternative to `innerHTML` to mitig
 </script>
 ```
 
-# Authors and Contributing Editors
-
-Jim Manico - jim@owasp.org
-
-Abraham Kang - abraham.kang@owasp.org
-
-Gareth (Gaz) Heyes
-
-Stefano Di Paola
-
-Achim Hoffmann - achim@owasp.org
-
-Robert (RSnake) Hansen
-
-Mario Heiderich
-
-John Steven
-
-Chris (Chris BEEF) Schmidt
-
-Mike Samuel
-
-Jeremy Long
-
-Dhiraj Mishra - mishra.dhiraj@owasp.org
-
-Eduardo (SirDarkCat) Alberto Vela Nava
-
-Jeff Williams - jeff.williams@owasp.org
-
-Erlend Oftedal
+The `innerText` feature was originally introduced by Internet Explorer, and was formally specified in the HTML standard in 2016 after being adopted by all major browser vendors.

@@ -64,7 +64,7 @@ The meaning and business or application logic associated to the session ID must 
 
 The stored information can include the client IP address, User-Agent, e-mail, username, user ID, role, privilege level, access rights, language preferences, account ID, current state, last login, session timeouts, and other internal session details. If the session objects and properties contain sensitive information, such as credit card numbers, it is required to duly encrypt and protect the session management repository.
 
-It is recommended to create cryptographically strong session IDs through the usage of cryptographic hash functions such as SHA1 (160 bits).
+It is recommended to create cryptographically strong session IDs through the usage of cryptographic hash functions such as SHA256.
 
 # Session Management Implementation
 
@@ -126,7 +126,7 @@ See also: [SecureFlag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
 
 The `HttpOnly` cookie attribute instructs web browsers not to allow scripts (e.g. JavaScript or VBscript) an ability to access the cookies via the DOM document.cookie object. This session ID protection is mandatory to prevent session ID stealing through XSS attacks.
 
-See the OWASP [XSS (Cross Site Scripting) Prevention Cheat Sheet](XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet.md).
+See the OWASP [XSS (Cross Site Scripting) Prevention Cheat Sheet](Cross_Site_Scripting_Prevention_Cheat_Sheet.md).
 
 See also: [HttpOnly](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies)
 
@@ -162,6 +162,63 @@ Typically, session management capabilities to track users after authentication m
 - Determine if all state transitions in the application code properly check for the cookies and enforce their use
 - Ensure entire cookie should be encrypted if sensitive data is persisted in the cookie
 - Define all cookies being used by the application, their name and why they are needed
+
+# HTML5 Web Storage API
+
+The Web Hypertext Application Technology Working Group (WHATWG) describes the HTML5 Web Storage APIs, `localStorage` and `sessionStorage`, as mechanisms for storing name-value pairs client-side.
+Unlike HTTP cookies, the contents of `localStorage` and `sessionStorage` are not automatically shared within requests or responses by the browser and are used for storing data client-side.
+
+## The localStorage API
+
+### Scope
+
+Data stored using the `localStorage` API is accessible by pages which are loaded from the same origin, which is defined as the scheme (`https:\\`), host (`example.com`), port (`443`) and domain/realm (`example.com`).
+This provides similar access to this data as would be achieved by using the `secure` flag on a cookie, meaning that data stored from `https` could not be retrieved via `http`. Due to potential concurrent access from separate windows/threads, data stored using `localStorage` may be susceptible to shared access issues (such as race-conditions) and should be considered non-locking ([Web Storage API Spec](https://html.spec.whatwg.org/multipage/webstorage.html#the-localstorage-attribute)). 
+
+### Duration
+
+Data stored using the `localStorage` API is persisted across browsing sessions, extending the timeframe in which it may be accessible to other system users. 
+
+### Offline Access
+
+The standards do not require `localStorage` data to be encrypted-at-rest, meaning it may be possible to directly access this data from disk.
+
+### Use Case
+
+WHATWG suggests the use of `localStorage` for data that needs to be accessed across windows or tabs, across multiple sessions, and where large (multi-megabyte) volumes of data may need to be stored for performance reasons.
+
+## The sessionStorage API
+
+### Scope
+
+The `sessionStorage` API stores data within the window context from which it was called, meaning that Tab 1 cannot access data which was stored from Tab 2.
+Also, like the `localStorage` API, data stored using the `sessionStorage` API is accessible by pages which are loaded from the same origin, which is defined as the scheme (`https:\\`), host (`example.com`), port (`443`) and domain/realm (`example.com`).
+This provides similar access to this data as would be achieved by using the `secure` flag on a cookie, meaning that data stored from `https` could not be retrieved via `http`.
+
+### Duration
+
+The `sessionStorage` API only stores data for the duration of the current browsing session. Once the tab is closed, that data is no longer retrievable. This does not necessarily prevent access, should a browser tab be reused or left open. Data may also persist in memory until a garbage collection event.
+
+### Offline Access
+
+The standards do not require `sessionStorage` data to be encrypted-at-rest, meaning it may be possible to directly access this data from disk.
+
+### Use Case
+
+WHATWG suggests the use of `sessionStorage` for data that is relevant for one-instance of a workflow, such as details for a ticket booking, but where multiple workflows could be performed in other tabs concurrently. The window/tab bound nature will keep the data from leaking between workflows in separate tabs.
+
+## Security Risks
+
+In general, secure or sensitive data should not be stored persistently in browser data stores as this may permit information leakage on shared systems. Because the Web Storage mechanisms are APIs, this also permits access from injected scripts, making it less secure than cookies with the `httponly` flag applied.
+While a case could be made for storing workflow specific data in `sessionStorage` for use by that specific tab/window across reloads, the Web Storage APIs should be treated as insecure storage. Because of this, if a business solution requires the use of the `localStorage` or `sessionStorage` to store sensitive data, such a solution should encipher data and apply replay protections.
+Due to the potential to access Web Storage APIs via an XSS attack, session identifiers should be stored using non-persistent cookies, with the appropriate flags to protect from [insecure access](Transport_Layer_Protection_Cheat_Sheet.md) (`Secure`), [XSS](Cross_Site_Scripting_Prevention_Cheat_Sheet.md) (`HttpOnly`) and [CSRF](Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.md) issues (`SameSite`).
+
+## References
+
+- [Web Storage APIs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+- [LocalStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+- [SessionStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+- [WHATWG Web Storage Spec](https://html.spec.whatwg.org/multipage/webstorage.html#webstorage)
 
 # Session ID Life Cycle
 
@@ -324,7 +381,3 @@ Web Application Firewalls offer detection and protection capabilities against se
 On the other hand, more advanced capabilities can be implemented to allow the WAF to keep track of sessions, and the corresponding session IDs, and apply all kind of protections against session fixation (by renewing the session ID on the client-side when privilege changes are detected), enforcing sticky sessions (by verifying the relationship between the session ID and other client properties, like the IP address or User-Agent), or managing session expiration (by forcing both the client and the web application to finalize the session).
 
 The open-source ModSecurity WAF, plus the OWASP [Core Rule Set](https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project), provide capabilities to detect and apply security cookie attributes, countermeasures against session fixation attacks, and session tracking features to enforce sticky sessions.
-
-# Authors and Primary Editors
-
-Raul Siles (DinoSec) - raul@dinosec.com

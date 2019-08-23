@@ -66,7 +66,7 @@ Be aware of the following Java API uses for potential serilization vulnerability
 
 2. `XStream` with `fromXML` method (xstream version <= v1.46 is vulnerable to the serialization issue)
 
-3. `ObjectInputSteam` with `readObject`
+3. `ObjectInputStream` with `readObject`
 
 4. Uses of `readObject`, `readObjectNodData`, `readResolve` or `readExternal`
 
@@ -163,7 +163,6 @@ To enable these agents, simply add a new JVM parameter:
 
 Agents taking this approach have been released by various community members:
 
-- [Invoker Defender by Go-CD](https://github.com/gocd/invoker-defender)
 - [rO0 by Contrast Security](https://github.com/Contrast-Security-OSS/contrast-rO0)
 
 A similar, but less scalable approach would be to manually patch and bootstrap your JVM's ObjectInputStream. Guidance on this approach is available [here](https://github.com/wsargent/paranoid-java-serialization).
@@ -279,7 +278,6 @@ If the application knows before deserialization which messages will need to be p
 - [Java De-serialization toolkits](https://github.com/brianwrf/hackUtils)
 - [Java de-serialization tool](https://github.com/frohoff/ysoserial)
 - [.Net payload generator](https://github.com/pwntester/ysoserial.net)
-- [Java de-serialization detection by DNS](https://github.com/GoSeecure/break-fast-serial)
 - [Burp Suite extension](https://github.com/federicodotta/Java-Deserialization-Scanner/releases)
 - [Java secure deserialization library](https://github.com/ikkisoft/SerialKiller)
 - [Serianalyzer is a static bytecode analyzer for deserialization](https://github.com/mbechler/serianalyzer)
@@ -303,7 +301,6 @@ If the application knows before deserialization which messages will need to be p
 - [A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.](https://github.com/frohoff/ysoserial)
 - [Java De-serialization toolkits](https://github.com/brianwrf/hackUtils)
 - [Java de-serialization tool](https://github.com/frohoff/ysoserial)
-- [Java de-serialization detection by DNS](https://github.com/GoSeecure/break-fast-serial)
 - [Burp Suite extension](https://github.com/federicodotta/Java-Deserialization-Scanner/releases)
 - [Java secure deserialization library](https://github.com/ikkisoft/SerialKiller)
 - [Serianalyzer is a static bytecode analyzer for deserialization](https://github.com/mbechler/serianalyzer)
@@ -320,9 +317,3 @@ If the application knows before deserialization which messages will need to be p
   - [James Forshaw - Black Hat USA 2012 - Are You My Type? Breaking .net Sandboxes Through Serialization](https://www.youtube.com/watch?v=Xfbu-pQ1tIc)
   - [Jonathan Birch BlueHat v17 - Dangerous Contents - Securing .Net Deserialization](https://www.youtube.com/watch?v=oxlD8VWWHE8)
   - [Alvaro Muñoz & Oleksandr Mirosh - Friday the 13th: Attacking JSON - AppSecUSA 2017](https://www.youtube.com/watch?v=NqHsaVhlxAQ)
-
-# Authors and Primary Editors
-
-Arshan Dabirsiaghi - arshan@contrastsecurity.org
-
-Tony Hsu (Hsiang-Chih) Shane Murnion

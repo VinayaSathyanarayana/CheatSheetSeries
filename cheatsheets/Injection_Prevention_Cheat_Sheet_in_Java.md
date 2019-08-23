@@ -299,7 +299,7 @@ Assert.assertEquals(finalSafeOutputExpected, safeOutput);
 
 ### References
 
-- [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS))
+- [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29)
 - [OWASP Java HTML Sanitizer](https://github.com/owasp/java-html-sanitizer)
 - [OWASP Java Encoder](https://github.com/owasp/owasp-java-encoder)
 - [Java RegEx](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
@@ -381,7 +381,7 @@ To prevent an attacker from writing malicious content into the application log, 
 
 - Filter the user input used to prevent injection of **C**arriage **R**eturn (CR) or **L**ine **F**eed (LF) characters.
 - Limit the size of the user input value used to create the log message.
-- Make sure [all XSS defenses](XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet.md) are applied when viewing log files in a web browser.
+- Make sure [all XSS defenses](Cross_Site_Scripting_Prevention_Cheat_Sheet.md) are applied when viewing log files in a web browser.
 
 ### Example using Log4j2
 
@@ -395,7 +395,7 @@ Configuration of a logging policy to roll on 10 files of 5MB each, and encode/li
             <PatternLayout>
                 <!-- Encode any CRLF chars in the message and limit its 
                      maximum size to 500 characters -->
-                <Pattern>%d{ISO8601} %-5p - %encode{%.-500m}{CRLF}%n</Pattern>
+                <Pattern>%d{ISO8601} %-5p - %encode{ %.-500m }{CRLF}%n</Pattern>
             </PatternLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="5MB"/>
@@ -488,9 +488,3 @@ other log viewing/analysis tools that don't expect the log data to be pre-HTML e
 - [LOG4J Appender](https://logging.apache.org/log4j/2.x/manual/appenders.html)
 - [Log Forging](https://github.com/javabeanz/owasp-security-logging/wiki/Log-Forging) - See the Logback section about the `CRLFConverter` this library provides.
 - [Usage of OWASP Security Logging with Logback](https://github.com/javabeanz/owasp-security-logging/wiki/Usage-with-Logback)
-
-# Authors and Primary Editors
-
-Dominique Righetto - dominique.righetto@owasp.org
-
-Dave Wichers - dave.wichers@owasp.org

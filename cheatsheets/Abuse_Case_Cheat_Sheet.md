@@ -64,8 +64,6 @@ that lead to proper protection of these critical business use cases.
 
 [Synopsys source](https://www.synopsys.com/blogs/software-security/abuse-cases-can-drive-security-requirements)
 
-[Another definition of Abuse Case by Cigital](https://cigital.com/papers/download/misuse-bp.pdf)
-
 ## How to define the list of Abuse Cases?
 
 There are many different ways to define the list of abuse cases for a feature (that can be mapped to a user story in agile projects).
@@ -227,7 +225,7 @@ If one or several abuse cases are handled at:
     - Put a special comment in the classes/scripts/modules to indicate that *This class/module/script takes into account the abuse cases ABUSE_CASE_001, ABUSE_CASE_002, ABUSE_CASE_xxx*.
     - Dedicated annotation like `@AbuseCase(ids={"ABUSE_CASE_001","ABUSE_CASE_002"})` can be used to facilitate tracking and allow identification into integrated development environment.
 
-Using this way, it becomes possible (via some minor scripting) to identify where the the abuse cases are addressed.
+Using this way, it becomes possible (via some minor scripting) to identify where abuse cases are addressed.
 
 ## Step 5: During implementation - Abuse cases handling validation
 
@@ -458,11 +456,3 @@ All figures were created using https://www.draw.io/ site and exported (as PNG im
 All XML descriptor files for each schema are available below (using XML description, modification of the schema is possible using DRAW.IO site):
 
 [Schemas descriptors archive](../assets/Abuse_Case_Cheat_Sheet_SchemaBundle.zip)
-
-# Authors and Primary Editors
-
-James Robinson - jrobinson@netskope.com
-
-Dominique Righetto - dominique.righetto@owasp.org
-
-[Rick Mitchell](https://www.owasp.org/index.php/User:Rick.mitchell)

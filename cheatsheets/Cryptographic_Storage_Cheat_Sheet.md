@@ -11,8 +11,8 @@ The general practices and required minimum key length depending on the scenario 
 - Key exchange: `Diffie–Hellman key exchange with minimum 2048 bits`
 - Message Integrity: `HMAC-SHA2`
 - Message Hash: `SHA2 256 bits`
-- Assymetric encryption: `RSA 2048 bits`
-- Symmetric-key algorithm: `AES 128 bits`
+- Asymmetric encryption: `RSA 2048 bits`
+- Symmetric encryption: `AES 128 bits`
 - Password Hashing: `Argon2, PBKDF2, Scrypt, Bcrypt`
 
 # Providing Cryptographic Functionality
@@ -36,7 +36,7 @@ E.g. [CCM](http://en.wikipedia.org/wiki/CCM_mode) or [GCM](http://en.wikipedia.o
 
 Do not implement an existing cryptographic algorithm on your own, no matter how easy it appears. Instead, use widely accepted algorithms and widely accepted implementations.
 
-Only use approved public algorithms such as AES, RSA public key cryptography, and SHA-256 or better for hashing. Do not use weak algorithms, such as MD5 or SHA1. Avoid hashing for password storage, instead use Argon2, PBKDF2, bcrypt or scrypt. Note that the classification of a "strong" cryptographic algorithm can change over time. See [NIST approved algorithms](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf) or ISO TR 14742 “Recommendations on Cryptographic Algorithms and their use” or [Algorithms, key size and parameters report – 2014](http://www.enisa.europa.eu/activities/identity-and-trust/library/deliverables/algorithms-key-size-and-parameters-report-2014/at_download/fullReport) from European Union Agency for Network and Information Security. E.g. [AES](http://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 128, [RSA](http://en.wikipedia.org/wiki/RSA_(cryptosystem)) 3072, [SHA](http://en.wikipedia.org/wiki/Secure_Hash_Algorithm) 256.
+Only use approved public algorithms such as AES, RSA public key cryptography, and SHA-256 or better for hashing. Do not use weak algorithms, such as MD5 or SHA1. Avoid hashing for password storage, instead use Argon2, PBKDF2, bcrypt or scrypt. Note that the classification of a "strong" cryptographic algorithm can change over time. See [NIST approved algorithms](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf) or ISO TR 14742 “Recommendations on Cryptographic Algorithms and their use” or [Algorithms, key size and parameters report – 2014](http://www.enisa.europa.eu/activities/identity-and-trust/library/deliverables/algorithms-key-size-and-parameters-report-2014/at_download/fullReport) from European Union Agency for Network and Information Security. E.g. [AES](http://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 128, [RSA](http://en.wikipedia.org/wiki/RSA_%28cryptosystem%29) 3072, [SHA](http://en.wikipedia.org/wiki/Secure_Hash_Algorithm) 256.
 
 Ensure that the implementation has (at minimum) had some cryptography experts involved in its creation. If possible, use an implementation that is FIPS 140-2 certified.
 
@@ -63,16 +63,16 @@ Ensure that random algorithms are seeded with sufficient entropy.
 
 Tools like [NIST RNG Test tool](http://csrc.nist.gov/groups/ST/toolkit/rng/documentation_software.html) (as used in PCI PTS Derived Test Requirements) can be used to comprehensively assess the quality of a Random Number Generator by reading e.g. 128MB of data from the RNG source and then assessing its randomness properties with the tool.
 
-The following libraries are considered **weak** random numbers generators and should not be used.
+The following functions are considered **weak** random number generators and should not be used.
 
-- C library: `random()`, `rand()` instead use [getrandom(2)](http://man7.org/linux/man-pages/man2/getrandom.2.html) instead
-- Java library: `java.util.Random()` instead use `java.security.SecureRandom` instead
+- C : `random()`, `rand()` instead use [getrandom(2)](http://man7.org/linux/man-pages/man2/getrandom.2.html)
+- Java : `java.util.Random()` instead use `java.security.SecureRandom`
+- PHP : `rand()`, `mt_rand()`, `array_rand()`, `uniqid()` instead use [random_bytes()](https://www.php.net/manual/en/function.random-bytes.php), [random_int()](https://www.php.net/manual/en/function.random-int.php) in PHP 7 or [openssl_random_pseudo_bytes()](https://www.php.net/manual/en/function.openssl-random-pseudo-bytes.php) in PHP 5 (which is **deprecated** and **should not be used**)
 
-For secure random number generation, refer to NIST SP 800-90A. CTR-DRBG、HASH-DRBG、HMAC-DRBG are recommended. Refer to NIST SP800-22 A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications, and the testing toolkit.
+For secure random number generation, refer to NIST SP 800-90A. CTR-DRBG, HASH-DRBG or HMAC-DRBG are recommended. Refer to NIST SP800-22 A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications, and the testing toolkit.
 
 References:
 - http://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-22r1a.pdf
-- http://csrc.nist.gov/groups/ST/toolkit/rng/documents/sts-2.1.2.zip
 
 #### Rule - Use Authenticated Encryption of data
 
@@ -208,7 +208,7 @@ To perform the strong key management functions we have seen in requirement 3.6 w
 
 ## Documentation
 
-- [Testing for SSL-TLS](https://www.owasp.org/index.php/Testing_for_SSL-TLS_(OWASP-CM-001))
+- [Testing for SSL-TLS](https://www.owasp.org/index.php/Testing_for_SSL-TLS_%28OWASP-CM-001%29)
 - [Guide to Cryptography](https://www.owasp.org/index.php/Guide_to_Cryptography)
 - [Application Security Verification Standard (ASVS) – Communication Security Verification Requirements (V10)](http://www.owasp.org/index.php/ASVS)
 - [SSLLabs wiki](https://github.com/ssllabs/research/wiki)
@@ -220,17 +220,3 @@ To perform the strong key management functions we have seen in requirement 3.6 w
 
 - [TestSSL](https://testssl.sh/)
 - [Cryptosense](https://cryptosense.com/discovery/)
-
-# Authors and Primary Editors
-
-Kevin Kenan - kevin@k2dd.com
-
-David Rook - david.a.rook@gmail.com
-
-Kevin Wall - kevin.w.wall@gmail.com
-
-Jim Manico - jim@owasp.org
-
-Fred Donovan - fred.donovan@owasp.org
-
-Tony Hsu - hsiang_chih@yahoo.com

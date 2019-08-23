@@ -22,12 +22,28 @@ mv TOC.md $WORK/cheatsheets/.
 cp -r ../cheatsheets $WORK/cheatsheets/cheatsheets
 cp -r ../assets $WORK/cheatsheets/assets
 cp ../Index.md $WORK/cheatsheets/cheatsheets/Index.md
+cp ../IndexASVS.md $WORK/cheatsheets/cheatsheets/IndexASVS.md
+cp ../IndexProactiveControls.md $WORK/cheatsheets/cheatsheets/IndexProactiveControls.md
 sed -i 's/assets\//..\/assets\//g' $WORK/cheatsheets/cheatsheets/Index.md
+sed -i 's/assets\//..\/assets\//g' $WORK/cheatsheets/cheatsheets/IndexASVS.md
+sed -i 's/assets\//..\/assets\//g' $WORK/cheatsheets/cheatsheets/IndexProactiveControls.md
 sed -i 's/cheatsheets\///g' $WORK/cheatsheets/cheatsheets/Index.md
+sed -i 's/cheatsheets\///g' $WORK/cheatsheets/cheatsheets/IndexASVS.md
+sed -i 's/cheatsheets\///g' $WORK/cheatsheets/cheatsheets/IndexProactiveControls.md
 echo "Step 4/5: Generate the site."
 cd $WORK
 gitbook install --log=error
 gitbook build . $WORK/$GENERATED_SITE --log=info
+if [[ $? != 0 ]]
+then
+    echo "Error detected during the generation of the site, generation failed!"
+    exit 1
+fi
+# Replace the default favicon by the OWASP one
+# I did not achieve to find a stable and "trustable" gitbook plugin to do that
+# So I only replace the default images: https://www.npmjs.com/search?q=gitbook%20favicon
+cp ../assets/WebSite_Favicon.png site/gitbook/images/apple-touch-icon-precomposed-152.png
+cp ../assets/WebSite_Favicon.ico site/gitbook/images/favicon.ico
 echo "Step 5/5: Cleanup."
 rm -rf cheatsheets
 rm -rf node_modules
